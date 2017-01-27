@@ -10,8 +10,13 @@ namespace :data do
       open(url) do |entries_json|
         entries = JSON.parse(entries_json.read)
         entries.each do |entry|
+          tags = entry["tags"].collect do |tag|
+            tag_name = tag["name"]
+            Tag.create(_key: tag_name, label: tag_name)
+          end
           Document.create(title:   entry["title"],
-                          content: entry["body"])
+                          content: entry["body"],
+                          tags:    tags)
         end
       end
     end
