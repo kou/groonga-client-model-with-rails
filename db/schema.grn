@@ -1,0 +1,26 @@
+table_create \
+  --name documents \
+  --flags TABLE_NO_KEY
+column_create \
+  --table documents \
+  --name title \
+  --flags COLUMN_SCALAR \
+  --type ShortText
+column_create \
+  --table documents \
+  --name content \
+  --flags COLUMN_SCALAR \
+  --type Text
+
+table_create \
+  --name terms \
+  --flags TABLE_PAT_KEY \
+  --key_type ShortText \
+  --normalizer NormalizerAuto \
+  --default_tokenizer TokenBigram
+column_create \
+  --table terms \
+  --name documents_index \
+  --flags COLUMN_INDEX|WITH_POSITION|WITH_SECTION \
+  --type documents \
+  --source title,content
