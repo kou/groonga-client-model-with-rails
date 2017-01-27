@@ -27,7 +27,8 @@ class DocumentsController < ApplicationController
     @request = request.
       drilldowns("tag").keys("tags").
       drilldowns("tag").sort_keys("-_nsubrecs").
-      drilldowns("tag").output_columns(["_key", "_nsubrecs", "label"])
+      drilldowns("tag").output_columns(["_key", "_nsubrecs", "label"]).
+      paginate(params[:page])
   end
 
   # GET /documents/1
