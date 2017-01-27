@@ -24,3 +24,27 @@ column_create \
   --flags COLUMN_INDEX|WITH_POSITION|WITH_SECTION \
   --type documents \
   --source title,content
+
+table_create \
+  --name tags \
+  --flags TABLE_HASH_KEY \
+  --key_type ShortText \
+  --normalizer NormalizerAuto
+column_create \
+  --table tags \
+  --name label \
+  --flags COLUMN_SCALAR \
+  --type ShortText
+
+column_create \
+  --table documents \
+  --name tags \
+  --flags COLUMN_VECTOR \
+  --type tags
+
+column_create \
+  --table tags \
+  --name documents_tags \
+  --flags COLUMN_INDEX \
+  --type documents \
+  --source tags
