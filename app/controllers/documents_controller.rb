@@ -15,8 +15,12 @@ class DocumentsController < ApplicationController
                        "tags.label",
                        "highlight_html(title)",
                        "snippet_html(content)",
-                     ]).
-      query(@query)
+                     ])
+    if @query.present?
+      request = request.
+        query(@query).
+        sort_keys(["-_score"])
+    end
     if @tag.present?
       request = request.filter("tags @ %{tag}", tag: @tag)
     end
