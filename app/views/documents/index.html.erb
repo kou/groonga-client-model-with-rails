@@ -5,9 +5,20 @@
 <p><%= @request.response.n_hits %> records</p>
 
 <%= form_tag(documents_path, method: "get") do %>
+  <%= hidden_field_tag "tag", @tag %>
   <%= search_field_tag "query", @query %>
   <%= submit_tag "Search" %>
 <% end %>
+
+<nav>
+  <% @request.response.drilldowns["tag"].records.each do |tag| %>
+  <%= link_to_unless @tag == tag._key,
+                     "#{tag.label} (#{tag._nsubrecs})",
+                     url_for(query: @query, tag: tag._key) %>
+  <% end %>
+  <%= link_to "タグ絞り込み解除",
+              url_for(query: @query) %>
+</nav>
 
 <table>
   <thead>
@@ -27,7 +38,9 @@
         <td>
           <ul>
           <% document.tags.each do |tag| %>
-            <li><%= tag.label %></li>
+            <li><%= link_to_unless @tag == tag._key,
+                                   tag.label,
+                                   url_for(query: @query, tag: tag._key) %></li>
           <% end %>
           </ul>
         </td>

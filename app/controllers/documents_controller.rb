@@ -5,9 +5,18 @@ class DocumentsController < ApplicationController
   # GET /documents.json
   def index
     @query = params[:query]
-    @request = Document.select.
+    @tag = params[:tag]
+
+    request = Document.select.
       output_columns(["_id", "_key", "*", "tags.label"]).
       query(@query)
+    if @tag.present?
+      request = request.filter("tags @ %{tag}", tag: @tag)
+    end
+    @request = request.
+      drilldowns("tag").keys("tags").
+      drilldowns("tag").sort_keys("-_nsubrecs").
+      drilldowns("tag").output_columns(["_key", "_nsubrecs", "label"])
   end
 
   # GET /documents/1
