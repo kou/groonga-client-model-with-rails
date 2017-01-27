@@ -4,7 +4,9 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.json
   def index
-    @documents = Document.all
+    @query = params[:query]
+    @request = Document.select.
+      query(@query)
   end
 
   # GET /documents/1
