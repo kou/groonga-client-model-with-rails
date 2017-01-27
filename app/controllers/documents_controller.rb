@@ -6,6 +6,7 @@ class DocumentsController < ApplicationController
   def index
     @query = params[:query]
     @request = Document.select.
+      output_columns(["_id", "_key", "*", "tags.label"]).
       query(@query)
   end
 
