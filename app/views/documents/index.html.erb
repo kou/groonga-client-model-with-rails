@@ -33,8 +33,16 @@
   <tbody>
     <% @request.response.records.each do |document| %>
       <tr>
-        <td><%= document.title %></td>
-        <td><%= document.content %></td>
+        <td><%= document.highlight_html.html_safe %></td>
+        <td>
+          <% if document.snippet_html.present? %>
+            <% document.snippet_html.each do |chunk| %>
+              <div>...<%= chunk.html_safe %>...</div>
+            <% end %>
+          <% else %>
+            <%= document.content %>
+          <% end %>
+        </td>
         <td>
           <ul>
           <% document.tags.each do |tag| %>

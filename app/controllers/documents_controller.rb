@@ -8,7 +8,14 @@ class DocumentsController < ApplicationController
     @tag = params[:tag]
 
     request = Document.select.
-      output_columns(["_id", "_key", "*", "tags.label"]).
+      output_columns([
+                       "_id",
+                       "_key",
+                       "*",
+                       "tags.label",
+                       "highlight_html(title)",
+                       "snippet_html(content)",
+                     ]).
       query(@query)
     if @tag.present?
       request = request.filter("tags @ %{tag}", tag: @tag)
